@@ -116,8 +116,8 @@ local CoreGui = game:GetService("CoreGui")
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 local Players = game:GetService("Players")
-local player = Players.LocalPlayer
-local Mouse = Players.LocalPlayer:GetMouse()
+local player = game:GetService("Players").LocalPlayer
+local Mouse = game:GetService("Players").LocalPlayer:GetMouse()
 
 local Blacklist = {
     Enum.KeyCode.Unknown,
