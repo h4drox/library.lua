@@ -2193,57 +2193,61 @@ function library:Window(Info)
 
             function sectiontable:Label(Info)
                 Info.Text = Info.Text or "Label"
-                Info.Default = Info.Default or ""
-                Info.Placeholder = Info.Placeholder or ""
-                Info.Callback = Info.Callback or function(_) end
 
-                local holder = Instance.new("Frame")
-                holder.BackgroundTransparency = 1
-                holder.Size = UDim2.new(0, 175, 0, 28)
-                holder.Parent = itemContainer
+                local label = Instance.new("Frame")
+                label.Name = "Label"
+                label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                label.BackgroundTransparency = 1
+                label.Size = UDim2.new(0, 175, 0, 28)
+                label.Parent = itemContainer
 
-                local frame = Instance.new("Frame")
-                frame.AnchorPoint = Vector2.new(0.5, 0.5)
-                frame.BackgroundColor3 = Theme.ItemFrame
-                frame.BorderSizePixel = 0
-                frame.Position = UDim2.new(0.5, 0, 0.5, 0)
-                frame.Size = UDim2.new(0, 171, 0, 24)
-                frame.Parent = holder
+                local labelFrame = Instance.new("Frame")
+                labelFrame.Name = "LabelFrame"
+                labelFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+                labelFrame.BackgroundColor3 = Theme.ItemFrame
+                labelFrame.BorderSizePixel = 0
+                labelFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+                labelFrame.Size = UDim2.new(0, 171, 0, 24)
+                labelFrame.Parent = label
 
-                local stroke = Instance.new("UIStroke")
-                stroke.Color = Theme.ItemUIStroke
-                stroke.Parent = frame
+                local labelUIStroke = Instance.new("UIStroke")
+                labelUIStroke.Name = "labelUIStroke"
+                labelUIStroke.Color = Theme.ItemUIStroke
+                labelUIStroke.Parent = labelFrame
 
-                local title = Instance.new("TextLabel")
-                title.Font = Enum.Font.GothamBold
-                title.Text = Info.Text
-                title.TextColor3 = Theme.ItemText
-                title.TextSize = 12
-                title.BackgroundTransparency = 1
-                title.Position = UDim2.new(0, 8, 0, 0)
-                title.Size = UDim2.new(0.5, -8, 1, 0)
-                title.TextXAlignment = Enum.TextXAlignment.Left
-                title.Parent = frame
-
-                local box = Instance.new("TextBox")
-                box.Font = Enum.Font.Gotham
-                box.Text = Info.Default
-                box.PlaceholderText = Info.Placeholder
-                box.TextColor3 = Theme.ItemText
-                box.TextSize = 12
-                box.BackgroundTransparency = 1
-                box.Position = UDim2.new(0.5, 0, 0, 0)
-                box.Size = UDim2.new(0.5, -8, 1, 0)
-                box.TextXAlignment = Enum.TextXAlignment.Right
-                box.Parent = frame
-
-                box.FocusLost:Connect(function()
-                    task.spawn(function()
-                        Info.Callback(box.Text)
-                    end)
+                labelFrame.MouseEnter:Connect(function()
+                    TweenService:Create(
+                        labelFrame,
+                        TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut),
+                        { BackgroundColor3 = Theme.HoverItemFrame }
+                    ):Play()
                 end)
 
-                return box
+                labelFrame.MouseLeave:Connect(function()
+                    TweenService:Create(
+                        labelFrame,
+                        TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut),
+                        { BackgroundColor3 = Theme.ItemFrame }
+                    ):Play()
+                    TweenService:Create(
+                        labelUIStroke,
+                        TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut),
+                        { Color = Theme.ItemUIStroke }
+                    ):Play()
+                end)
+
+                local labelText = Instance.new("TextLabel")
+                labelText.Name = "LabelText"
+                labelText.Font = Enum.Font.GothamBold
+                labelText.Text = Info.Text
+                labelText.TextColor3 = Theme.ItemText
+                labelText.TextSize = 12
+                labelText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                labelText.BackgroundTransparency = 1
+                labelText.Size = UDim2.new(0, 171, 0, 24)
+                labelText.Parent = labelFrame
+
+                return labelText
             end
 
             return sectiontable
