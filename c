@@ -2191,6 +2191,61 @@ function library:Window(Info)
                 )
             end
 
+            function sectiontable:Label(Info)
+                Info.Text = Info.Text or "Label"
+                Info.Default = Info.Default or ""
+                Info.Placeholder = Info.Placeholder or ""
+                Info.Callback = Info.Callback or function(_) end
+
+                local holder = Instance.new("Frame")
+                holder.BackgroundTransparency = 1
+                holder.Size = UDim2.new(0, 175, 0, 28)
+                holder.Parent = itemContainer
+
+                local frame = Instance.new("Frame")
+                frame.AnchorPoint = Vector2.new(0.5, 0.5)
+                frame.BackgroundColor3 = Theme.ItemFrame
+                frame.BorderSizePixel = 0
+                frame.Position = UDim2.new(0.5, 0, 0.5, 0)
+                frame.Size = UDim2.new(0, 171, 0, 24)
+                frame.Parent = holder
+
+                local stroke = Instance.new("UIStroke")
+                stroke.Color = Theme.ItemUIStroke
+                stroke.Parent = frame
+
+                local title = Instance.new("TextLabel")
+                title.Font = Enum.Font.GothamBold
+                title.Text = Info.Text
+                title.TextColor3 = Theme.ItemText
+                title.TextSize = 12
+                title.BackgroundTransparency = 1
+                title.Position = UDim2.new(0, 8, 0, 0)
+                title.Size = UDim2.new(0.5, -8, 1, 0)
+                title.TextXAlignment = Enum.TextXAlignment.Left
+                title.Parent = frame
+
+                local box = Instance.new("TextBox")
+                box.Font = Enum.Font.Gotham
+                box.Text = Info.Default
+                box.PlaceholderText = Info.Placeholder
+                box.TextColor3 = Theme.ItemText
+                box.TextSize = 12
+                box.BackgroundTransparency = 1
+                box.Position = UDim2.new(0.5, 0, 0, 0)
+                box.Size = UDim2.new(0.5, -8, 1, 0)
+                box.TextXAlignment = Enum.TextXAlignment.Right
+                box.Parent = frame
+
+                box.FocusLost:Connect(function()
+                    task.spawn(function()
+                        Info.Callback(box.Text)
+                    end)
+                end)
+
+                return box
+            end
+
             return sectiontable
         end
 
